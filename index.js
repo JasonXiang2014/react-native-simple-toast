@@ -2,7 +2,7 @@ import { NativeModules, Platform } from 'react-native';
 
 const RCTToast = Platform.select({
   ios: NativeModules.LRDRCTSimpleToast,
-  android: require('react-native').ToastAndroid,
+  android: NativeModules.ToastModule,
 });
 
 export default {
@@ -16,7 +16,12 @@ export default {
   CENTER: RCTToast.CENTER,
 
   show(message, duration, viewControllerBlacklist) {
-    RCTToast.show(
+    Platform.OS == 'android'
+    ? RCTToast.show(
+      message,
+      duration === undefined ? RCTToast.SHORT : duration
+    )
+    : RCTToast.show(
       message,
       duration === undefined ? RCTToast.SHORT : duration,
       viewControllerBlacklist
@@ -24,7 +29,13 @@ export default {
   },
 
   showWithGravity(message, duration, gravity, viewControllerBlacklist) {
-    RCTToast.showWithGravity(
+    Platform.OS == 'android'
+    ? RCTToast.showWithGravity(
+      message,
+      duration === undefined ? RCTToast.SHORT : duration,
+      gravity
+    )
+    : RCTToast.showWithGravity(
       message,
       duration === undefined ? RCTToast.SHORT : duration,
       gravity,
