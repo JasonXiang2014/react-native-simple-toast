@@ -5,6 +5,8 @@ const RCTToast = Platform.select({
   android: NativeModules.ToastModule,
 });
 
+const DEFAULT_SHORT = 1.5
+
 export default {
   // Toast duration constants
   SHORT: RCTToast.SHORT,
@@ -17,13 +19,15 @@ export default {
 
   show(message, duration, viewControllerBlacklist) {
     Platform.OS == 'android'
-    ? RCTToast.show(
+    ? RCTToast.showWithGravity(
       message,
-      duration === undefined ? RCTToast.SHORT : duration
+      duration === undefined ? DEFAULT_SHORT : duration,
+      RCTToast.CENTER
     )
-    : RCTToast.show(
+    : RCTToast.showWithGravity(
       message,
-      duration === undefined ? RCTToast.SHORT : duration,
+      duration === undefined ? DEFAULT_SHORT : duration,
+      RCTToast.CENTER,
       viewControllerBlacklist
     );
   },
